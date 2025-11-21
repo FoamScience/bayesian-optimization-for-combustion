@@ -3,8 +3,12 @@ import { useBibliography } from 'slidev-theme-foamscience/composables/useBibliog
 export default () => {
   const { loadJsonFromUrl, allReferences } = useBibliography()
 
+  // Construct URL with base path support
+  const baseUrl = import.meta.env.BASE_URL || '/'
+  const referencesUrl = `${baseUrl}references.json`.replace(/\/+/g, '/')
+
   // Load bibliography on app initialization (before any slides render)
-  loadJsonFromUrl('/references.json').then((success) => {
+  loadJsonFromUrl(referencesUrl).then((success) => {
     if (success) {
       const ids = allReferences.value.map(ref => ref.key)
       console.log('📚 Loaded bibliography with IDs:', ids)

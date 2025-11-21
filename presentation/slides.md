@@ -138,11 +138,13 @@ import { ref, onMounted } from 'vue'
 const bayesStates = ref([])
 
 onMounted(async () => {
-  const labelsResponse = await fetch('/bayes-opt/labels.json')
+  const baseUrl = import.meta.env.BASE_URL || '/'
+  const labelsUrl = `${baseUrl}bayes-opt/labels.json`.replace(/\/+/g, '/')
+  const labelsResponse = await fetch(labelsUrl)
   const labels = await labelsResponse.json()
   bayesStates.value = labels.map(item => ({
     label: item.label,
-    data: `/bayes-opt/state-${String(item.index).padStart(2, '0')}.json`
+    data: `${baseUrl}bayes-opt/state-${String(item.index).padStart(2, '0')}.json`.replace(/\/+/g, '/')
   }))
 })
 </script>
@@ -268,8 +270,13 @@ hideInToc: true
 
 How about multi-objective setups?
 
+<script setup>
+const baseUrl = import.meta.env.BASE_URL || '/'
+const paretoData = `${baseUrl}pareto/pareto-frontier-plotly.json`.replace(/\/+/g, '/')
+</script>
+
 <PlotlyChart
-  data="/pareto/pareto-frontier-plotly.json"
+  :data="paretoData"
   :height="360"
 />
 
@@ -383,7 +390,12 @@ transition: fade
 
 Convergence plots - the HyperVolume trace
 
-<PlotlyChart data="/images/AVCs_hypervolume_trace.json" :height="340"
+<script setup>
+const baseUrl = import.meta.env.BASE_URL || '/'
+const hyperVolumeData = `${baseUrl}images/AVCs_hypervolume_trace.json`.replace(/\/+/g, '/')
+</script>
+
+<PlotlyChart :data="hyperVolumeData" :height="340"
     :layout="{xaxis: { showgrid: false, zeroline: false }, yaxis: { showgrid: false, zeroline: false }}" />
 
 ---
@@ -430,7 +442,12 @@ hideInToc: true
 
 Parallel coordinates for CH4DomainAvg
 
-<PlotlyChart data="/images/AVCs_parallel_coordinates_for_ch4domainavg.json" :height="380" 
+<script setup>
+const baseUrl = import.meta.env.BASE_URL || '/'
+const parallelCoordsData = `${baseUrl}images/AVCs_parallel_coordinates_for_ch4domainavg.json`.replace(/\/+/g, '/')
+</script>
+
+<PlotlyChart :data="parallelCoordsData" :height="380"
   :layout="{ font: { size: 8 }, margin: { t: 80 } }" />
 
 ---
@@ -441,7 +458,12 @@ hideInToc: true
 
 Parallel coordinates for CH4DomainAvg
 
-<PlotlyChart data="/images/AVCs_pareto_frontier_CH4DomainAvg_vs_PatternFactor.json" :height="380"
+<script setup>
+const baseUrl = import.meta.env.BASE_URL || '/'
+const paretoFrontierData = `${baseUrl}images/AVCs_pareto_frontier_CH4DomainAvg_vs_PatternFactor.json`.replace(/\/+/g, '/')
+</script>
+
+<PlotlyChart :data="paretoFrontierData" :height="380"
     :layout="{xaxis: { showgrid: false, zeroline: false }, yaxis: { showgrid: false, zeroline: false }}" />
 
 ---
@@ -811,8 +833,12 @@ layout: two-cols-header
 
 <span class="text-3xl">References and more links</span>
 
+<script setup>
+const baseUrl = import.meta.env.BASE_URL || '/'
+const referencesFile = `${baseUrl}references.json`.replace(/\/+/g, '/')
+</script>
 
-<References bibFile="/references.json" />
+<References :bibFile="referencesFile" />
 
 <PDivider :type="solid" />
 
