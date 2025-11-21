@@ -1,0 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// HOT START: Initialize entire domain to 2000K with air composition
+defaultFieldValues
+(
+    volScalarFieldValue T 300     // Hot start as per reference case
+    volScalarFieldValue N2 0.77    // Air composition (non-moving air)
+    volScalarFieldValue O2 0.23
+    volScalarFieldValue CH4 0
+    volScalarFieldValue CO2 0
+    volScalarFieldValue H2O 0
+    volScalarFieldValue k 2.0      // Consistent with new velocities
+);
+
+regions
+(
+    // Fuel inlet region (bottom inlet at X=0, Y from 0 to 0.02)
+    // Set fuel composition and temperature (will be overwritten by inlet BC immediately)
+    boxToCell
+    {
+        box (-0.001 0.000 0.000) (0.001 0.020 0.002);
+        fieldValues
+        (
+            volScalarFieldValue CH4 0.1561
+            volScalarFieldValue O2 0.1966
+            volScalarFieldValue N2 0.6473
+            volScalarFieldValue T 300      // Fuel inlet temperature
+            volScalarFieldValue k 5.27     // Fuel turbulence
+        );
+    }
+);
+
+
+// ************************************************************************* //

@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+radiation
+{
+    type            radiation;
+    libs            (radiationModels);
+}
+
+// Limit turbulent viscosity to prevent extreme values
+limitNut
+{
+    type            limitTurbulenceViscosity;
+    libs            (fieldFunctionObjects);
+    selectionMode   all;  // Apply to all cells
+    // Limits nut = Cmu * k^2 / epsilon, which indirectly constrains k/epsilon ratio
+}
+
+// Limit temperature to reasonable range
+limitT
+{
+    type            limitTemperature;
+    libs            (fieldFunctionObjects);
+    selectionMode   all;  // Apply to all cells
+    min             250;   // Min 250 K (below ambient but safe)
+    max             3000;  // Max 3000 K (above flame temperature but safe)
+}
+
+
+// ************************************************************************* //

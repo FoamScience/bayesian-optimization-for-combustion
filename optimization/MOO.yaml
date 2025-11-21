@@ -1,0 +1,182 @@
+version: 1.1.3
+
+## Do not forget to run ./prepare.sh
+
+experiment:
+  name: AVCs
+  description: Fun with vortex-trapped combustors
+  parameters:
+  - name: bevelPosition
+    bounds: [0.1, 0.3]
+    parameter_type: float
+  - name: bevelAngle
+    bounds: [0, 120]
+    parameter_type: int
+  - name: outletWidth
+    bounds: [0.07, 0.095]
+    parameter_type: float
+  - name: rearBodyLength
+    bounds: [0.01, 0.03]
+    parameter_type: float
+  - name: rearBodyWidth
+    bounds: [0.02, 0.045]
+    parameter_type: float
+  - name: rearBodyPosition
+    bounds: [0.12, 0.3]
+    parameter_type: float
+  - name: rearBodyAngle
+    bounds: [-80, 80]
+    parameter_type: int
+  - name: vane1Position
+    bounds: [0.086, 0.12]
+    parameter_type: float
+  - name: vane1FilletCoeff
+    values: [0.0, 0.5, 0.8]
+    parameter_type: float
+    is_ordered: true
+  - name: vane1Leg1Length
+    bounds: [0.01, 0.02]
+    parameter_type: float
+  - name: vane1Leg1Angle
+    bounds: [85, 120]
+    parameter_type: int
+  - name: vane1Leg2Length
+    bounds: [0.01, 0.02]
+    parameter_type: float
+  - name: vane1Leg2Angle
+    bounds: [30, 95]
+    parameter_type: int
+  - name: vane2Position
+    bounds: [0.086, 0.12]
+    parameter_type: float
+  - name: vane2FilletCoeff
+    values: [0.0, 0.5, 0.8]
+    parameter_type: float
+    is_ordered: true
+  - name: vane2Leg1Length
+    bounds: [0.01, 0.02]
+    parameter_type: float
+  - name: vane2Leg1Angle
+    bounds: [175, 220]
+    parameter_type: int
+  - name: vane2Leg2Length
+    bounds: [0.01, 0.02]
+    parameter_type: float
+  - name: vane2Leg2Angle
+    bounds: [150, 185]
+    parameter_type: int
+  parameter_constraints: []
+
+trial_generation:
+  method: fast
+
+existing_trials:
+  file_path: ''
+
+baseline:
+  parameters:
+    bevelPosition: 0.1
+    bevelAngle: 60
+    outletWidth: 0.08
+    rearBodyLength: 0.02
+    rearBodyWidth: 0.042
+    rearBodyPosition: 0.12
+    rearBodyAngle: 0
+    vane1Position: 0.086
+    vane1FilletCoeff: 0.8
+    vane1Leg1Length: 0.015
+    vane1Leg1Angle: 90
+    vane1Leg2Length: 0.015
+    vane1Leg2Angle: 90
+    vane2Position: 0.086
+    vane2FilletCoeff: 0.8
+    vane2Leg1Length: 0.015
+    vane2Leg1Angle: 180
+    vane2Leg2Length: 0.015
+    vane2Leg2Angle: 180
+
+optimization:
+
+  metrics:
+  - name: CH4DomainAvg
+    progress: []
+    command: ["/tmp/data/scripts/get_metric.sh", ".", "ch4_domain_average"]
+  - name: PatternFactor
+    progress: []
+    command: ["/tmp/data/scripts/get_metric.sh", ".", "pattern_factor"]
+  - name: TemperatureRise
+    progress: []
+    command: ["/tmp/data/scripts/get_metric.sh", ".", "temperature_rise"]
+  - name: ContinuityErrors
+    progress: ["/tmp/data/scripts/get_metric.sh", ".", "continuity_error_cumulative"]
+    command: ["/tmp/data/scripts/get_metric.sh", ".", "continuity_error_cumulative"]
+    lower_is_better: True # <- guide the early-stopping
+
+  objective: "-CH4DomainAvg, -PatternFactor, TemperatureRise" # Maybe add flame stability too?
+
+  outcome_constraints:
+  - CH4DomainAvg <= 1.1*baseline
+  - PatternFactor <= 1.1*baseline
+  - TemperatureRise >= 0.9*baseline
+
+  case_runner:
+    template_case: AVC
+    mode: local
+    runner: ./Allrun
+    log_runner: false
+    remote_status_query: ""
+    remote_early_stop: ""
+    trial_destination: /tmp/data/trials
+    artifacts_folder: ./artifacts
+    file_substitution: []
+    variable_substitution:
+    - file: /system/geometryDict
+      parameter_scopes:
+        bevelPosition: channel.bevel.position
+        bevelAngle: channel.bevel.angle
+        outletWidth: channel.outletWidth
+        rearBodyLength: rearBluntBody.length
+        rearBodyWidth: rearBluntBody.width
+        rearBodyPosition: rearBluntBody.positionX
+        rearBodyAngle: rearBluntBody.rotationAngle
+        vane1CenterX: vane1.centerX
+        vane1CenterY: vane1.centerY
+        vane1FilletCoeff: vane1.filetCoeff
+        vane1Leg1Length: vane1.L1
+        vane1Leg1Angle: vane1.angleLeg1
+        vane1Leg2Length: vane1.L2
+        vane1Leg2Angle: vane1.angleLeg2
+        vane2CenterX: vane2.centerX
+        vane2CenterY: vane2.centerY
+        vane2FilletCoeff: vane2.filetCoeff
+        vane2Leg1Length: vane2.L1
+        vane2Leg1Angle: vane2.angleLeg1
+        vane2Leg2Length: vane2.L2
+        vane2Leg2Angle: vane2.angleLeg2
+
+orchestration_settings:
+  max_trials: 100
+  parallelism: 3
+  initial_seconds_between_polls: 60
+  seconds_between_polls_backoff_factor: 1.5
+  timeout_hours: 48
+  ttl_seconds_for_trials: 3600
+  global_stopping_strategy:
+    min_trials: 10
+    window_size: 5
+    improvement_bar: 0.1
+  early_stopping_strategy:
+    type: percentile
+    metric_names: [ "ContinuityErrors" ]
+    percentile_threshold: 25
+    min_progression: 5
+    trial_indices_to_ignore: !range [0, 20]
+
+store:
+  save_to: json
+  read_from: nowhere
+  backend_options:
+    url: null
+
+visualizer:
+  sensitivity_callback: "scripts.generate_geometry.generate_2d_image"

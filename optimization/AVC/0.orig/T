@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300;  // HOT START: entire domain at 2000K initially
+
+boundaryField
+{
+    inletAir
+    {
+        type            fixedValue;
+        value           uniform 300;  // Air at 300K
+    }
+
+    inletFuel
+    {
+        type            fixedValue;
+        value           uniform 300;  // Fuel at 300K
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
+    walls
+    {
+        type            fixedValue;
+        value           uniform 1000;  // ISOTHERMAL: walls at 1000K
+    }
+
+    vanes
+    {
+        type            fixedValue;
+        value           uniform 1000;  // ISOTHERMAL: vanes at 1000K
+    }
+
+    frontBody
+    {
+        type            zeroGradient;  // Adiabatic front body (as per reference)
+    }
+
+    rearBody
+    {
+        type            zeroGradient;  // Adiabatic rear body (as per reference)
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

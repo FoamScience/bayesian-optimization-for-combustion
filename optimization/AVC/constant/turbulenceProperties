@@ -1,0 +1,47 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType      RAS;
+
+RAS
+{
+    RASModel        kEpsilon;
+
+    turbulence      on;
+
+    printCoeffs     on;
+
+    // k-epsilon model coefficients with explicit bounds
+    kEpsilonCoeffs
+    {
+        Cmu         0.09;
+        C1          1.44;
+        C2          1.92;
+        C3          0;
+        sigmak      1.0;
+        sigmaEps    1.3;
+
+        // IMPORTANT: These bounds prevent negative or extreme values
+        // Note: Not all OpenFOAM versions support these, but they won't hurt
+        boundNormalStress   yes;
+        kMin        1e-10;  // Absolute minimum for k
+        epsilonMin  1e-10;  // Absolute minimum for epsilon
+        nutMin      1e-10;  // Absolute minimum for nut
+    }
+}
+
+
+// ************************************************************************* //

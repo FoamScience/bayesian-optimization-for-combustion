@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          meshDict;
+}
+
+// Refined mesh parameters for better turbulence resolution
+maxCellSize     1.5e-3;  // Reduced from 2e-3 for 50% more cells
+boundaryCellSize 0.75e-3;  // Reduced from 1e-3 for better near-wall resolution
+surfaceFile     avc.stl;
+
+renameBoundary {
+    defaultName frontAndBack;
+    defaultType empty;
+    newPatchNames {
+        "vane.*" {
+            newName vanes;
+            type wall;
+        }
+        "walls" {
+            newName walls;
+            type wall;
+        }
+        "frontBody" {
+            newName frontBody;
+            type wall;
+        }
+        "rearBody" {
+            newName rearBody;
+            type wall;
+        }
+        "inletAir" {
+            newName inletAir;
+            type patch;
+        }
+        "inletFuel" {
+            newName inletFuel;
+            type patch;
+        }
+        "outlet" {
+            newName outlet;
+            type patch;
+        }
+    }
+}
+
+boundaryLayers
+{
+    patchBoundaryLayers
+    {
+        "vane.*|.*Body"
+        {
+            nLayers         6;    // Increased from 5 for smoother transition
+            thicknessRatio  1.5;  // Reduced from 1.8 for more gradual expansion
+        }
+    }
+
+    // Optional: Add boundary layers to channel walls too
+    "walls"
+    {
+        nLayers         6;
+        thicknessRatio  1.5;
+    }
+}
+
+// Local refinement in critical regions (recirculation zones)
+//localRefinement
+//{
+//    // Cavity region between blunt bodies (primary recirculation)
+//    cavityRegion
+//    {
+//        cellSize 0.5e-3;  // 0.5mm in recirculation zones
+//        box (0.08 0.025 0.0) (0.125 0.075 0.002);
+//    }
+//
+//    // Wake region behind rear blunt body
+//    wakeRegion
+//    {
+//        cellSize 0.75e-3;  // 0.75mm in wake
+//        box (0.14 0.025 0.0) (0.18 0.075 0.002);
+//    }
+//}
+
+
+// ************************************************************************* //

@@ -1,0 +1,71 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      k;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 2.0;  // Higher for hot start (matching inlet air approximately)
+
+boundaryField
+{
+    inletAir
+    {
+        type            fixedValue;
+        value           uniform 2.34;  // k = 1.5*(U*I)^2 for U=25m/s, I=0.05
+    }
+
+    inletFuel
+    {
+        type            fixedValue;
+        value           uniform 5.27;  // k = 1.5*(U*I)^2 for U=37.5m/s, I=0.05
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
+    walls
+    {
+        type            kqRWallFunction;
+        value           uniform 0.1;
+    }
+
+    vanes
+    {
+        type            kqRWallFunction;
+        value           uniform 0.1;
+    }
+
+    frontBody
+    {
+        type            kqRWallFunction;
+        value           uniform 0.1;
+    }
+
+    rearBody
+    {
+        type            kqRWallFunction;
+        value           uniform 0.1;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

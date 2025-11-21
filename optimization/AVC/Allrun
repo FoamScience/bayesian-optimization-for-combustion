@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+if [ -z "$WM_PROJECT" ]; then
+    echo "Must source and OpenCFD OpenFOAM version for this to work!"
+    exit 1
+fi
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+set -e
+
+# Create case.foam file for ParaView
+touch case.foam
+
+# Generate geometry
+echo "Generating geometry..."
+uv run --script /tmp/data/scripts/generate_geometry.py
+
+# Generate mesh
+echo "Generating mesh..."
+runApplication cartesian2DMesh
+
+# Check mesh quality
+echo "Checking mesh..."
+runApplication checkMesh
+
+# Restore 0 directory
+echo "Restoring 0 directory..."
+restore0Dir
+
+# Convert CHEMKIN to OpenFOAM format
+echo "Converting chemistry..."
+runApplication chemkinToFoam \
+    chemkin/grimech30.dat chemkin/thermo30.dat chemkin/transportProperties \
+    constant/reactionsGRI constant/thermo.compressibleGasGRI
+
+# Initialize fields (including fuel region and warm cavity)
+echo "Initializing fields..."
+runApplication setFields
+runApplication decomposePar
+
+# Test without chemistry
+echo "Running test case (no chemistry)..."
+foamDictionary constant/chemistryProperties -entry chemistry -set off
+foamDictionary system/controlDict -entry endTime -set 0.006  # Write every 1ms
+runParallel $(getApplication)
+# Single stage: Run with chemistry ON from start (hot start at 2000K)
+echo "Running simulation with chemistry ON (hot start method)..."
+foamDictionary system/controlDict -entry endTime -set 0.050        # Run to 50ms
+foamDictionary constant/chemistryProperties -entry chemistry -set on
+runParallel -a $(getApplication)
+
+#------------------------------------------------------------------------------

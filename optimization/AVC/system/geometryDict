@@ -1,0 +1,45 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      geometryParameters;
+}
+
+// Flow conditions
+flow {
+    inletVelocity 37.0;           // m/s - air inlet velocity (PDF case)
+    inletTemperature 300;         // K - ambient inlet temperature (PDF case)
+    inletPressure 101325;         // Pa - atmospheric pressure
+
+    // Fluid properties (air at 300K)
+    density 1.177;                // kg/m^3
+    dynamicViscosity 1.846e-5;    // kg/(m·s)
+}
+
+channel {
+    length 0.4;
+    bevel {        position 0.228;        angle 80;
+    }
+    inletWidth 0.1;    outletWidth 0.0899999999999999;
+}
+
+frontBluntBody {
+    length 0.08;
+    width 0.06;
+}
+
+rearBluntBody {    length 0.0223999999999999;    width 0.03475;    positionX 0.1344;    rotationAngle -77;
+}
+
+vane1 {
+    centerX 0.086;
+    centerY 0.014;
+    thickness 1.0e-3;    filetCoeff 0.8;    L1 0.01;    angleLeg1 114;    L2 0.0199;    angleLeg2 46;
+}
+
+vane2 {
+    centerX 0.086;
+    centerY 0.086;
+    thickness 1.0e-3;    filetCoeff 0.5;    L1 0.0189;    angleLeg1 196;    L2 0.0151;    angleLeg2 154;
+}

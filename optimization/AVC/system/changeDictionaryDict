@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// This dictionary is used to heat the frontBody to 1500K before starting
+// the combustion phase (Stage 2). During cold flow (Stage 1), frontBody
+// is kept at ambient temperature to avoid thermodynamic calculation issues.
+
+dictionaryReplacement
+{
+    T
+    {
+        boundaryField
+        {
+            frontBody
+            {
+                type            fixedValue;
+                value           uniform 1500;  // Hot blunt body for ignition
+            }
+        }
+    }
+}
+
+// ************************************************************************* //
