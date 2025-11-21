@@ -12,15 +12,19 @@ drawings:
 transition: slide-left
 mdc: true
 duration: 35min
-logoLight: /images/nhr-tu-logo.png
-logoDark: /images/nhr-tu-logo-dark.png
+logoLight: https://foamscience.github.io/bayesian-optimization-for-combustion/images/nhr-tu-logo.png
+logoDark: https://foamscience.github.io/bayesian-optimization-for-combustion/images/nhr-tu-logo-dark.png
 layout: cover
-background: /images/cover.jpg
+background: https://foamscience.github.io/bayesian-optimization-for-combustion/images/cover.jpg
 bachgroundOpacity: 0.50
 footer:
   author: Mohammed Elwardi Fadeli
   affiliation: NHR4CES - Numerical Methods in Combustion - Nov. 2025
 ---
+
+<script setup>
+const baseUrl = import.meta.env.BASE_URL || '/'
+</script>
 
 # Multi-objective Bayesian Optimization for Combustion CFD
 
