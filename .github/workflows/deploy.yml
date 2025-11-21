@@ -51,7 +51,7 @@ jobs:
 
       - name: Build presentation
         working-directory: presentation
-        run: pnpm build
+        run: pnpm run build --base /bayesian-optimization-for-combustion/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
