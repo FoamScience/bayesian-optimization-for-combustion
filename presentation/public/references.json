@@ -1,0 +1,28 @@
+[
+    {
+        "url": "https://api.semanticscholar.org/CorpusID:246052706",
+        "pages": "8262-8278",
+        "volume": "10",
+        "year": "2022",
+        "journal": "IEEE Access",
+        "author": "Kůdela, Jakub and Matousek, Radomil",
+        "title": "New Benchmark Functions for Single-Objective Optimization Based on a Zigzag Pattern",
+        "ENTRYTYPE": "article",
+        "ID": "Kdela2022NewBF"
+    },
+    {
+        "keywords": "reacting flows, combustors, trapped-vortex combustor, numerical simulation, methane, hydrogen",
+        "url": "https://webthesis.biblio.polito.it/secure/18306/1/tesi.pdf",
+        "note": "Supervisor: Michele Ferlauto. Corso di laurea magistrale in Ingegneria Aerospaziale (LM-20)",
+        "pages": "89",
+        "month": "Academic year 2020/21",
+        "address": "Turin, Italy",
+        "type": "Master's thesis",
+        "year": "2021",
+        "school": "Politecnico di Torino",
+        "title": "Numerical Simulations of Reacting Flows in Innovative Combustors",
+        "author": "Manganaro, Salvatore",
+        "ENTRYTYPE": "mastersthesis",
+        "ID": "Manganaro2021"
+    }
+]

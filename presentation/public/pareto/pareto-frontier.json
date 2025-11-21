@@ -1,0 +1,51 @@
+{
+  "labels": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "components": [
+    {
+      "id": "dominated-trials",
+      "type": "points",
+      "label": "Dominated Trials",
+      "data": [
+        {"x": 4.5, "y": 7.0}, {"x": 5.7, "y": 5.8}, {"x": 6.7, "y": 4.8}, {"x": 7.4, "y": 4.2},
+        {"x": 8.2, "y": 3.5}, {"x": 6.0, "y": 7.5}, {"x": 7.3, "y": 6.2}, {"x": 8.7, "y": 5.0}
+      ],
+      "color": "#f38ba8",
+      "strokeWidth": 0,
+      "showPoints": true,
+      "pointSize": 8,
+      "lifetimeStart": 0
+    },
+    {
+      "id": "pareto-frontier",
+      "type": "points",
+      "label": "Pareto Frontier",
+      "data": [
+        {"x": 2.8, "y": 7.5}, {"x": 3.2, "y": 6.2}, {"x": 3.9, "y": 5.5}, {"x": 4.6, "y": 4.0},
+        {"x": 5.3, "y": 3.2}, {"x": 6.1, "y": 2.6}, {"x": 6.9, "y": 2.0}, {"x": 7.6, "y": 1.6}
+      ],
+      "color": "#a6e3a1",
+      "strokeWidth": 3,
+      "showPoints": true,
+      "pointSize": 10,
+      "lifetimeStart": 0
+    },
+    {
+      "id": "candidate-trials",
+      "type": "points",
+      "label": "Candidate Trials",
+      "data": [
+        {"x": 3.0, "y": 6.8}, {"x": 4.2, "y": 4.6}, {"x": 6.0, "y": 2.3}, {"x": 3.6, "y": 5.0}
+      ],
+      "color": "#89dceb",
+      "strokeWidth": 0,
+      "showPoints": true,
+      "pointSize": 12,
+      "lifetimeStart": 0
+    }
+  ],
+  "currentState": 0,
+  "xRange": [1.5, 10],
+  "yRange": [0, 9],
+  "xAxisLabel": "Objective 1 (minimize emissions)",
+  "yAxisLabel": "Objective 2 (minimize cost)"
+}

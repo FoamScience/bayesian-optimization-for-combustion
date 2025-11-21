@@ -1,0 +1,62 @@
+[
+  {
+    "index": 0,
+    "label": "The Objective Function"
+  },
+  {
+    "index": 1,
+    "label": "Step 1: Initial Random Samples"
+  },
+  {
+    "index": 2,
+    "label": "Iteration 1: Gaussian Process (Surrogate model)"
+  },
+  {
+    "index": 3,
+    "label": "Iteration 1: With Confidence Interval"
+  },
+  {
+    "index": 4,
+    "label": "Iteration 1: Acquisition Function (EI)"
+  },
+  {
+    "index": 5,
+    "label": "Iteration 1: New Sample Added"
+  },
+  {
+    "index": 6,
+    "label": "Iteration 2: Gaussian Process"
+  },
+  {
+    "index": 7,
+    "label": "Iteration 2: With Confidence Interval"
+  },
+  {
+    "index": 8,
+    "label": "Iteration 2: Acquisition Function (EI)"
+  },
+  {
+    "index": 9,
+    "label": "Iteration 2: New Sample Added"
+  },
+  {
+    "index": 10,
+    "label": "Iteration 3: Gaussian Process"
+  },
+  {
+    "index": 11,
+    "label": "Iteration 3: With Confidence Interval"
+  },
+  {
+    "index": 12,
+    "label": "Iteration 3: Acquisition Function (EI)"
+  },
+  {
+    "index": 13,
+    "label": "Iteration 3: New Sample Added"
+  },
+  {
+    "index": 14,
+    "label": "Final: Converged after 21 samples"
+  }
+]
