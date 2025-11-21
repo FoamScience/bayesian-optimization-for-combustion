@@ -1,0 +1,5 @@
+*html
+*csv
+*json
+!*_report.csv
+!**/*_client_state.json
